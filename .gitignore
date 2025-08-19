@@ -11,7 +11,6 @@ db.sqlite3
 
 # IDE
 .idea/
-.vscode/
 
 # Environment
 .env
