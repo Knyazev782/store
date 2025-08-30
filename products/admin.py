@@ -4,6 +4,7 @@ from products.models import Basket, Product, ProductCategory
 
 admin.site.register(Product)
 admin.site.register(ProductCategory)
+admin.site.register(Basket)
 
 
 class ProductAdmin(admin.ModelAdmin):
@@ -16,6 +17,6 @@ class ProductAdmin(admin.ModelAdmin):
 
 class BasketAdmin(admin.TabularInline):
     model = Basket
-    fields = ('product', 'quantity', 'created_timestamp')
+    fields = ('product', 'quantity', 'created_timestamp', 'price')
     readonly_fields = ('created_timestamp',)
     extra = 0

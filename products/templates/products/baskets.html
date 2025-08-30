@@ -5,21 +5,25 @@
         Корзина <span class="badge badge-secondary badge-pill">{{ baskets.total_quantity }}</span>
     </h4>
     {% for basket in baskets %}
-        <div class="card mb-3">
+        <div class="card mb-3" data-basket-id="{{ basket.id }}">
             <div class="card-body">
-                <h5 class="card-title">{{ basket.product.name }}</h5>
-                <p class="card-text">{{ basket.product.description }}</p>
+                <h5 class="card-title font-weight-bold text-primary">{{ basket.product.name }}</h5>
+                <p class="card-text text-muted">{{ basket.product.description }}</p>
             </div>
             <ul class="list-group list-group-flush">
                 <li class="list-group-item bg-light">
-                    <div class="row text-center">
+                    <div class="row text-center align-items-center">
                         <div class="col-lg-4">
-                            <input name="basketID" type="number" class="form-control"
-                                   value="{{ basket.quantity }}" min="0">
+                            <form method="post" action="{% url 'products:basket_update' basket.id %}" onchange="this.submit();">
+                                {% csrf_token %}
+                                <input type="number" name="quantity" class="form-control text-center" value="{{ basket.quantity }}" min="0" style="width: 100px; display: inline-block;">
+                            </form>
                         </div>
-                        <div class="col-lg-4">{{ basket.sum|intcomma }} руб.</div>
                         <div class="col-lg-4">
-                            <a href="{% url 'products:basket_remove' basket.id %}">
+                            <span class="h5 font-weight-bold text-success">{{ basket.sum|intcomma }} руб.</span>
+                        </div>
+                        <div class="col-lg-4">
+                            <a href="{% url 'products:basket_remove' basket.id %}" class="text-danger">
                                 <i class="fas fa-trash"></i>
                             </a>
                         </div>
@@ -29,16 +33,16 @@
         </div>
     {% endfor %}
     <div class="card mb-3">
-        <div class="card-footer">
-            <p class="float-left">Итого</p>
-            <h4 class="float-right">{{ baskets.total_sum|intcomma }} руб.</h4>
+        <div class="card-footer d-flex justify-content-between align-items-center">
+            <p class="mb-0 font-weight-bold">Итого</p>
+            <h4 class="mb-0 text-primary">{{ baskets.total_sum|intcomma }} руб.</h4>
         </div>
     </div>
     <a class="btn btn-success btn-lg float-right" href="{% url 'orders:order_create' %}">
         Оформить заказ
     </a>
 {% else %}
-    <h4 class="mt-3 mb-3 text-center">
+    <h4 class="mt-3 mb-3 text-center text-muted">
         Корзина пуста
     </h4>
 {% endif %}
